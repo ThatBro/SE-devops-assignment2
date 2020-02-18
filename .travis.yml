@@ -1,27 +1,22 @@
-sudo: required 
+sudo: required
 services:
-  - docker
-# ref: https://docs.travis-ci.com/user/languages/python
+- docker
 language: python
 python:
-  - "3.6"
-
-
-
+- '3.6'
 before_install:
-  - docker version
-  - docker info
+- docker version
+- docker info
 install:
-    - npm install newman
-    - pip install -r requirements.txt
-    - pip install -r test-requirements.txt
-    - pip install nose
-    - pip install Flask-Testing
+- npm install newman
+- pip install -r requirements.txt
+- pip install -r test-requirements.txt
+- pip install nose
+- pip install Flask-Testing
 before_script:
-    - node --version
-    - npm --version
-    - node_modules/.bin/newman --version  
-    
+- node --version
+- npm --version
+- node_modules/.bin/newman --version
 script:
 - python -m unittest discover
 - docker build -t swagger-spring-example:1.0.0 .
@@ -32,8 +27,11 @@ script:
   fi; done
 - docker logs example_api
 - node_modules/.bin/newman run tests/postman_collection.json -e tests/postman_environment.json
-
 after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker tag my_docker_reposetory/swagger_server my_docker_reposetory/swagger_server
-  - docker push my_docker_reposetory/swagger_server
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- docker tag my_docker_reposetory/swagger_server my_docker_reposetory/swagger_server
+- docker push my_docker_reposetory/swagger_server
+env:
+  global:
+  - secure: cgbEmX77LYafRAcmidtJxOaVIAocGWPrNt5QDd0wtc1k7uIFfRrJA2tAadYRvaHaYQjRLapNe0kdMzc21qCU0njO0k8cWAxP94YhuIuYLxqy8BExy6LHzXcZsduDGNyZpa52IaXMEil18nIKDCnnQE/T0enV5YBC2OieiCkc2ZJbtvbUMwSGlrYgI7ISnWI1aCx7+H6pGgyiEojDtSD2+qktSNxEQesrjm7MuKafQCFUFMRFYYnhL2q5pPezLuwHVMOYxOt5rvwhR68gCxIpTACNP4Y3+LvJorRbAWSjC3kg4N5NPFiDjqkMh95z0tQP57wx5O/OUSa6r7arq5lfsu93KZ/U81cULu1y0FB4N93RYuf2TTtPcfRfvDLKcWBvd7LetTteVaxe2rF8PGmx36IoFyjOolm3gjIjwp4O4fEmdUn0T6KZGkIiDBoWfA0GGYzVEvLCBSinLPCCltgj/Ix9UU5X30TGs+XfKnrovutYr/HShmBEOiIiEpDEFe7KRncf0CJk880pVFrsYHDOJGJ16IFdDE3B1Pgx6npE1PCvKfv4DrB5sUunspp2ZK9SGrsSR+6rhnUgXQbzVgPDNISESRyCIu8D+hk+/W4lrUjXDvSPftfaJz/70i2Wa5fGgf214y1G1Mq9ogJhQkN3wSNMJbOIs6b3OyHkXdm1SJg=
+  - secure: imIyg3HpdGQ/a1jJuulcDEk2o95domQiZvvzeJCEpaTpMC3pwokc2yTZXHLMBGvEKp8BqmDEU43tH0lk/TDgb7VsSryh+5jsWJ6GADFK+RFp5a6prxj13kflSSNcktW814fSd6T1utirXt6OpckItw05MVUWKqGuHNydShQJ40e/Do5gFQgw+ualPMDSfLWq/RidS+iQh1iBwqi7MY+Ha+wkk/pKeCTPRSns9AUyqPJBfimL9hgxMZ9Eg5+kFtTroM+Rjl0wOB4ojdb4VqKfY5xdQs1Z/d4ZFiMJyUQAj+Fq4iwvzTo+OXkaOP+zYFMTu3GftsVmm5ZHPGsmR6JELIigobzp36gc/5jee7vQv7lt5YDF5xN8rLLG7VzcGRx4zyhJkaVzLwxNm/uUeXCuSc59N300zRSba3b+oiYElAj91kBLSznwiOa+CaGRzp9Mv94I9lauZCW6nnwsv5yAqYuxE11Y4CtLlbLxstdp5UPC9019ZaytNE+qFcu7FfIkF+piFLZtYATwxrP4KhG9En1d0bnj9fkLi013KF04XfcyQo2HRPgROYoQvdENpRCrPzRlTI7tIsUzXBgNzp5qfVnyIEuctpotkqCD92R00vg3EX0+zOMjzWLrhvz5hK52PpC5GaLsl9Tn1GiL/KOEuP4mnUV4xaMhacSOwXXgXc4=
